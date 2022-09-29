@@ -63,6 +63,11 @@
       "type": "gsp-api-v3draft",
       "version": "0.3",
       "folderPath": "gsp-api-v3draft"
+    },
+    {
+      "type": "thirdparty_sdk_outbound",
+      "version": "0.1",
+      "folderPath": "thirdparty_sdk_outbound_0.1"
     }
   ]
 }

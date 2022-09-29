@@ -1,6 +1,6 @@
 {
   "VERSION": 1,
-  "CALLBACK_ENDPOINT": "http://ttk-sender-backend:4040",
+  "CALLBACK_ENDPOINT": "http://docker.for.mac.localhost:3000",
   "CALLBACK_RESOURCE_ENDPOINTS": {
     "enabled": false,
     "endpoints": [
@@ -82,7 +82,7 @@
     "TEST_CASES_REPO_HUB_GP_PATH": "collections/hub/golden_path",
     "TEST_CASES_REPO_HUB_PROVISIONING_PATH": "collections/hub/provisioning"
   },
-  "DEFAULT_ENVIRONMENT_FILE_NAME": "hub_local_environment.json",
+  "DEFAULT_ENVIRONMENT_FILE_NAME": "default.json",
   "LABELS": [
     {
       "name": "p2p",
