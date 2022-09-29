@@ -1,0 +1,1059 @@
+openapi: 3.0.1
+info:
+  title: Google Standard Payments Payment Integrator Hosted Banking FOP API
+  description: This includes services hosted by Payment Integrators for Banking FOPs.
+  version: v3 draft
+paths:
+  /v2/associateAccount:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: AssociateAccount
+      description: 'Associates the customer''s account with the payment processor to the Google instrument being added. Account association happens after the integrator has authenticated the user. Association occurs via a server-to-server call that contains the `requestId` for the associated authentication flow (`authenticationRequestId`), an `associationId` and a `googlePaymentToken` (GPT). The payment processor should associate the `associationId` and the `googlePaymentToken` to the customer''s account for authentication. The GPT is used to initiate payments. The `associationId` is used during re-authentication calls to identify the account for authentication. If Google sends an `associationId` or a `googlePaymentToken` that the integrator has already seen during a different association, then it throws an error. An example request looks like: { "requestHeader": { "protocolVersion": { "major": 2 }, "requestId": "bWVyY2hhbnQgdHJhbnNhY3Rpb24gaWQ", "requestTimestamp": { "epochMillis": "1502220196077" }, "paymentIntegratorAccountId": "InvisiCashUSD" }, "authenticationRequestId": "bnAxdWTydDX==", "googlePaymentToken": { "issuerId": { "value": "InvisiCashUSA" }, "token": "ZXhhbXBsZSB1bmlxdWUgcGF5bWVudCB0b2tlbiB2YWx1ZQ" }, "associationId": "LmddbXBsZSByZWZlcmVuY2UgdG9rZW4gdmFsdWU", "provideUserInformation": true } An example response looks like: { "responseHeader": { "responseTimestamp": { "epochMillis": "1481900013178" } }, "result": { "success": { "bankAccountIdentifier": { "singaporeBankAccount": { "sgFastBankAccount": { "localAccountNumber": "113A", "swiftBic": { "value": "COBADEFF478" } }, "localBankIdentifier":{ "localBankCode": "7171", "localBranchCode": "060" } } }, "bankAccountDetails" : { "accountNumberSuffix": "1234", "bankAccountType": { "type": "SAVINGS" }, "bankAccountMetadata": { } }, "transactionLimits": { "transactionMaxLimit": { "noLimit": {} } }, "userInformation": { "name": "Example Customer", "addressLine": ["70 Pasir Panjang Rd"], "localityName": "#03-71", "postalCodeNumber": "117371", "countryCode": "SG" } } } } '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssociateAccountRequest'
+      responses:
+        default:
+          $ref: '#/components/schemas/AssociateAccountResponse'
+  /v2/associateAccountWithVendorGeneratedToken:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: AssociateAccountWithVendorGeneratedToken
+      description: 'Associates the customer''s account with the payment processor to the Google instrument being added. Account association happens after the integrator has authenticated the user. Association occurs via a server-to-server call that contains the `requestId` for the associated authentication flow (`authenticationRequestId`) and an `associationId`.The payment processor should associate the `associationId` to the customer''s account. The `associationId` is used during re-authentication calls to identify the account for authentication. If Google sends an `associationId` that the integrator has already seen during a different association, then it throws an error. In the response, the payment processor generates a ''vendorPaymentToken'' which is bound to the customer''s account and is used for authorizing subsequent payments. An example request looks like: { "requestHeader": { "protocolVersion": { "major": 2 }, "requestId": "bWVyY2hhbnQgdHJhbnNhY3Rpb24gaWQ", "requestTimestamp": { "epochMillis": "1502220196077" }, "paymentIntegratorAccountId": "InvisiCashUSD" }, "authenticationRequestId": "bnAxdWTydDX==", "associationId": "LmddbXBsZSByZWZlcmVuY2UgdG9rZW4gdmFsdWU_", "provideUserInformation": true } An example response looks like: { "responseHeader": { "responseTimestamp": { "epochMillis": "1481900013178" } }, "result": { "success": { "vendorPaymentToken": "ZXhhbXBsZSB1bmlxdWUgcGF5bWVudCB0b2tlbiB2YWx1ZQ", "tokenExpirationTime": { "epochMillis": "1481919332394" }, "bankAccountIdentifier": { "singaporeBankAccount": { "sgFastBankAccount": { "localAccountNumber": "113A", "swiftBic": { "value": "COBADEFF478" } }, "localBankIdentifier":{ "localBankCode": "7171", "localBranchCode": "060" } } }, "bankAccountDetails" : { "accountNumberSuffix": "1234", "bankAccountType": { "type": "SAVINGS" }, "bankAccountMetadata": { } }, "transactionLimits": { "transactionMaxLimit": { "noLimit": {} } }, "userInformation": { "name": "Example Customer", "addressLine": ["70 Pasir Panjang Rd"], "localityName": "#03-71", "postalCodeNumber": "117371", "countryCode": "SG" } } } } '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssociateAccountWithVendorGeneratedTokenRequest'
+      responses:
+        default:
+          $ref: '#/components/schemas/AssociateAccountWithVendorGeneratedTokenResponse'
+  /v2/disassociateAccount:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: DisassociateAccount
+      description: 'Deletes the association between the customer''s account with the payment processor and the Google instrument. This disassociation should be processed idempotently, so if the same requestId is used as a previously processed request, the previous result should be idempotently returned. Otherwise if Google sends a `googlePaymentToken` that has already been disassociated, an error should be returned. An example request looks like: { "requestHeader": { "protocolVersion": { "major": 2 }, "requestId": "bWVyY2hhbnQgdHJhbnNhY3Rpb24gaWQ", "requestTimestamp": { "epochMillis": "0" }, "paymentIntegratorAccountId": "InvisiCashUSD" }, "googlePaymentToken": { "issuerId": { "value": "InvisiCashUSA" }, "token": "ZXhhbXBsZSB1bmlxdWUgcGF5bWVudCB0b2tlbiB2YWx1ZQ" } } An example response looks like: { "responseHeader": { "responseTimestamp": { "epochMillis": "1481900013178" } }, "result": {"success": {}} } '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisassociateAccountRequest'
+      responses:
+        default:
+          $ref: '#/components/schemas/DisassociateAccountResponse'
+  /v3/transferFunds:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: TransferFunds
+      description: 'Initiates money movement between a customer''s account held with Google and the payment processor. The combination of `requestId` within the header and `paymentIntegratorAccountId` is the idempotency key and uniquely identifies this transaction. All mutations on this transaction (refunds) populate the `requestId` value in the `capture_request_id` field. An example request looks like: { "requestHeader": { "protocolVersion": { "major": 2 }, "requestId": "bWVyY2hhbnQgdHJhbnNhY3Rpb24gaWQ", "requestTimestamp": { "epochMillis": "1502220196077" }, "paymentIntegratorAccountId": "InvisiCashUSA_USD" }, "googlePaymentToken": { "issuerId": { "value": "InvisiCash" }, "token": "ZXhhbXBsZSB1bmlxdWUgcGF5bWVudCB0b2tlbiB2YWx1ZQ" }, "transactionDescription": "Google - Music", "amount": { "amountMicros": "728000000", "currencyCode": "INR" }, "destinationBankAccount": { "bankAccountId": { "accountNumber": { "localAccountNumber": "1234-5678-91" }, "swiftBic": "XXXXSGS0XXX" }, "bankAccountOwner": { "name": "Sam User" } }, "transferFundsContext": {} } An example response looks like: { "responseHeader": { "responseTimestamp": { "epochMillis": "1481900013178" } }, "result": {"success": {}}, "paymentIntegratorTransactionId": "aW50ZWdyYXRvciB0cmFuc2FjdGlvbiBpZA" } '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferFundsRequest'
+      responses:
+        '200':
+          $ref: '#/components/schemas/TransferFundsResponse'
+  /v3/getTransferFundsQuotation:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: GetQuotation
+      description: 'GetTransferFundsQuotation. The goal of this RPC is to obtain the relevant information about a transfer to present those details to the user for their evaluation. The evaluation criteria can be presented in the form of a set of challenges, such as: 1) Acknowledgement of the resolved identity of the payee proxy; Note: we will omit this for the first iteration; we assume that payee proxy lookup has already been performed in a previous GetPayeeProxyDisplayInfo call. 2) Agreement to quoted transfer parameters, including calculated transfer fees, 3) Re-authentication or 2FA, e.g. OTP. If the user approves of the terms of a transfer, a subsequent TransferFunds call is made. An example request looks like: { "requestHeader": { "protocolVersion": { "major": 2 }, "requestId": "bWVyY2hhbnQgdHJhbnN", "requestTimestamp": { "epochMillis": "1502220196077" }, "paymentIntegratorAccountId": "Mojaloop" }, "associationId": "ZXhhbXBsZSB1bmlxdWUgcGF5bWVudC", "transactionDescription": "Payment", "amount": { "amountMicros": "5000000", "currencyCode": "SGD" }, "payeeProxy": { "payeeProxyKey": { "networkId": "paynow", "phoneNumber": "+6577778888" }, "payeeProxyLookupRequestId": "bWVyY2hhbnQgdHJhbnN" } }'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTransferFundsQuotationRequest'
+      responses:
+        '200':
+          $ref: '#/components/schemas/GetTransferFundsQuotationResponse'
+  /v2/disburse:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: Disburse
+      description: This method performs a disburse from a Google-owned bank account to an account specified in the request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisburseRequest'
+      responses:
+        default:
+          $ref: '#/components/schemas/DisburseResponse'
+  /v2/getTransferFundsTransactionStatus:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: GetTransferFundsTransactionStatus
+      description: This method fetches the status of a TransferFunds transaction.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTransferFundsTransactionStatusRequest'
+      responses:
+        default:
+          $ref: '#/components/schemas/GetTransferFundsTransactionStatusResponse'
+  /v2/getDisburseTransactionStatus:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: GetDisburseTransactionStatus
+      description: This method fetches the status of a disburse transaction.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDisburseTransactionStatusRequest'
+      responses:
+        default:
+          $ref: '#/components/schemas/GetDisburseTransactionStatusResponse'
+  /v2/getPayeeProxyRegistrationStatus:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: GetPayeeProxyRegistrationStatus
+      description: 'Checks whether or not a mapping to a Payee has been registered for the specified proxy key. An example request looks like: { "requestHeader": { "protocolVersion": { "major": 2 }, "requestId": "bWVyY2hhbnQgdHJhbnNhY3Rpb24gaWQ", "requestTimestamp": { "epochMillis": "1502220196077" }, "paymentIntegratorAccountId": "InvisiCashUSA_USD" }, "proxyKey": { "phoneNumber": "+001234567890" } } An example response looks like: { "responseHeader": { "responseTimestamp": { "epochMillis": "1481900013178" } }, "registrationStatus": "REGISTERED" } '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPayeeProxyRegistrationStatusRequest'
+      responses:
+        default:
+          $ref: '#/components/schemas/GetPayeeProxyRegistrationStatusResponse'
+  /v2/getPayeeProxyDisplayInfo:
+    post:
+      tags:
+        - payment_integrator_banking_fop_api
+      operationId: GetPayeeProxyDisplayInfo
+      description: 'Returns the display data that has been registered for the specified proxy key (e.g. display name to be shown before payment) An example request looks like: { "requestHeader": { "protocolVersion": { "major": 2 }, "requestId": "bWVyY2hhbnQgdHJhbnNhY3Rpb24gaWQ", "requestTimestamp": { "epochMillis": "1502220196077" }, "paymentIntegratorAccountId": "InvisiCashUSA_USD" }, "proxyKey": { "phoneNumber": "+001234567890" } } An example response looks like: { "responseHeader": { "responseTimestamp": { "epochMillis": "1481900013178" } }, "displayInfoResult": { "success": { "displayInfo": { "displayName": "Sam Payee" } } } } '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPayeeProxyDisplayInfoRequest'
+      responses:
+        default:
+          $ref: '#/components/schemas/GetPayeeProxyDisplayInfoResponse'
+
+components:
+  schemas:
+    AssociateAccountRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        authenticationRequestId:
+          type: string
+        provideUserInformation:
+          type: boolean
+        googlePaymentToken:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2GooglePaymentToken'
+        associationId:
+          type: string
+    GoogleStandardPaymentsTypesV2RequestHeader:
+      type: object
+      properties:
+        requestId:
+          type: string
+        requestTimestamp:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Timestamp'
+        protocolVersion:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Version'
+        paymentIntegratorAccountId:
+          type: string
+    GoogleStandardPaymentsTypesV2Timestamp:
+      type: object
+      properties:
+        epochMillis:
+          type: string
+    GoogleStandardPaymentsTypesV2Version:
+      type: object
+      properties:
+        major:
+          type: integer
+    GoogleStandardPaymentsTypesV2GooglePaymentToken:
+      type: object
+      properties:
+        issuerId:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2IssuerId'
+        token:
+          type: string
+    GoogleStandardPaymentsTypesV2IssuerId:
+      type: object
+      properties:
+        value:
+          type: string
+    AssociateAccountResponse:
+      type: object
+      properties:
+        responseHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+        result:
+          $ref: '#/components/schemas/AssociateAccountResponseAssociateAccountResult'
+    GoogleStandardPaymentsTypesV2ResponseHeader:
+      type: object
+      properties:
+        responseTimestamp:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Timestamp'
+    AssociateAccountResponseAssociateAccountResult:
+      type: object
+      properties:
+        success:
+          $ref: '#/components/schemas/AssociateAccountResponseAssociateAccountResultSuccessDetails'
+        userAuthenticationFailed:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        notEligible:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        otpNotMatched:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        otpAlreadyUsed:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        otpLimitReached:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+    AssociateAccountResponseAssociateAccountResultSuccessDetails:
+      type: object
+      properties:
+        associatedAccountIdentifier:
+          $ref: '#/components/schemas/AssociatedAccountIdentifier'
+        bankAccountIdentifier:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2BankAccountIdentifier'
+        associatedAccountDetails:
+          $ref: '#/components/schemas/AssociatedAccountDetails'
+        bankAccountDetails:
+          $ref: '#/components/schemas/MaskedBankAccountDetails'
+        transactionLimits:
+          $ref: '#/components/schemas/TransactionLimits'
+        userInformation:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2UserInformation'
+    AssociatedAccountIdentifier:
+      type: object
+      properties:
+        accountId:
+          type: string
+    GoogleStandardPaymentsTypesV2BankAccountIdentifier:
+      type: object
+      properties:
+        singaporeBankAccount:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2SgBankAccount'
+        usBankAccount:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2UsBankAccount'
+        japanBankAccount:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2JapanBankAccount'
+    GoogleStandardPaymentsTypesV2SgBankAccount:
+      type: object
+      properties:
+        sgFastBankAccount:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2SgFastBankAccount'
+        localBankIdentifier:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2SgLocalBankIdentifier'
+    GoogleStandardPaymentsTypesV2SgFastBankAccount:
+      type: object
+      properties:
+        localAccountNumber:
+          type: string
+        swiftBic:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2SwiftBusinessIdentifierCode'
+    GoogleStandardPaymentsTypesV2SwiftBusinessIdentifierCode:
+      type: object
+      properties:
+        value:
+          type: string
+    GoogleStandardPaymentsTypesV2SgLocalBankIdentifier:
+      type: object
+      properties:
+        localBankCode:
+          type: string
+        localBranchCode:
+          type: string
+    GoogleStandardPaymentsTypesV2UsBankAccount:
+      type: object
+      properties:
+        accountNumber:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2DomesticBankAccountNumber'
+        bankIdentifier:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2UsBankIdentifier'
+    GoogleStandardPaymentsTypesV2DomesticBankAccountNumber:
+      type: object
+      properties:
+        number:
+          type: string
+    GoogleStandardPaymentsTypesV2UsBankIdentifier:
+      type: object
+      properties:
+        swiftBic:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2SwiftBusinessIdentifierCode'
+        usAbaRoutingNumber:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2AbaRoutingTransitNumber'
+    GoogleStandardPaymentsTypesV2AbaRoutingTransitNumber:
+      type: object
+      properties:
+        value:
+          type: string
+    GoogleStandardPaymentsTypesV2JapanBankAccount:
+      type: object
+      properties:
+        localAccountNumber:
+          type: string
+        localBankIdentifier:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2JapanLocalBankIdentifier'
+    GoogleStandardPaymentsTypesV2JapanLocalBankIdentifier:
+      type: object
+      properties:
+        localBankCode:
+          type: string
+        localBranchCode:
+          type: string
+    AssociatedAccountDetails:
+      type: object
+      properties:
+        accountNickname:
+          $ref: '#/components/schemas/AssociatedAccountNickname'
+        accountAlias:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesTokenizedFopV2AccountAlias'
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+    AssociatedAccountNickname:
+      type: object
+      properties:
+        partialAccountNickname:
+          type: string
+        fullAccountNickname:
+          type: string
+    GoogleStandardPaymentsTypesTokenizedFopV2AccountAlias:
+      type: object
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2PhoneNumber'
+        emailAddress:
+          type: string
+    GoogleStandardPaymentsTypesV2PhoneNumber:
+      type: object
+      properties:
+        value:
+          type: string
+    AccountType:
+      type: object
+      properties:
+        wirelessCarrierAccountType:
+          $ref: '#/components/schemas/WirelessCarrierAccountType'
+    WirelessCarrierAccountType:
+      type: object
+      properties:
+        prepaid:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        postpaid:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        enterprise:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        willNotProvidePii:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        controlPlan:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+    GoogleStandardPaymentsTypesV2Empty:
+      type: object
+      properties: {}
+    MaskedBankAccountDetails:
+      type: object
+      properties:
+        accountNumberSuffix:
+          type: string
+        bankAccountType:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2BankAccountType'
+        bankAccountMetadata:
+          $ref: '#/components/schemas/BankAccountMetadata'
+    GoogleStandardPaymentsTypesV2BankAccountType:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - TYPE_UNSPECIFIED
+            - SAVINGS
+            - CHECKING
+            - CURRENT
+    BankAccountMetadata:
+      type: object
+      properties:
+        bankingProductName:
+          type: string
+    TransactionLimits:
+      type: object
+      properties:
+        transactionMaxLimit:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2TransactionLimit'
+    GoogleStandardPaymentsTypesV2TransactionLimit:
+      type: object
+      properties:
+        limitAmount:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Amount'
+        noLimit:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+    GoogleStandardPaymentsTypesV2Amount:
+      type: object
+      properties:
+        amountMicros:
+          type: string
+        currencyCode:
+          type: string
+    GoogleStandardPaymentsTypesV2UserInformation:
+      type: object
+      properties:
+        name:
+          type: string
+        addressLine:
+          type: array
+          items:
+            type: string
+        localityName:
+          type: string
+        administrativeAreaName:
+          type: string
+        postalCodeNumber:
+          type: string
+        countryCode:
+          type: string
+        phone:
+          type: string
+        emailAddress:
+          type: string
+    AssociateAccountWithVendorGeneratedTokenRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        authenticationRequestId:
+          type: string
+        otpVerification:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1OtpVerification'
+        provideUserInformation:
+          type: boolean
+        associationId:
+          type: string
+    GoogleStandardPaymentsTypesV1OtpVerification:
+      type: object
+      properties:
+        sendOtpRequestId:
+          type: string
+        otp:
+          type: string
+    AssociateAccountWithVendorGeneratedTokenResponse:
+      type: object
+      properties:
+        responseHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+        paymentIntegratorAssociateAccountId:
+          type: string
+        result:
+          $ref: '#/components/schemas/AssociateAccountWithVendorGeneratedTokenResponseAssociateAccountResult'
+    AssociateAccountWithVendorGeneratedTokenResponseAssociateAccountResult:
+      type: object
+      properties:
+        success:
+          $ref: '#/components/schemas/AssociateAccountWithVendorGeneratedTokenResponseAssociateAccountResultSuccessDetails'
+        userAuthenticationFailed:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2UserAuthenticationFailed'
+        notEligible:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2AccountNotEligible'
+        otpNotMatched:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2OtpNotMatched'
+        otpAlreadyUsed:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2OtpAlreadyUsed'
+        otpLimitReached:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2OtpLimitReached'
+    AssociateAccountWithVendorGeneratedTokenResponseAssociateAccountResultSuccessDetails:
+      type: object
+      properties:
+        vendorPaymentToken:
+          type: string
+        tokenExpirationTime:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1Timestamp'
+        accountDetails:
+          $ref: '#/components/schemas/AssociatedAccountDetails'
+        accountId:
+          $ref: '#/components/schemas/AssociatedAccountIdentifier'
+        associatedAccountIdentifier:
+          $ref: '#/components/schemas/AssociatedAccountIdentifier'
+        bankAccountIdentifier:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2BankAccountIdentifier'
+        associatedAccountDetails:
+          $ref: '#/components/schemas/AssociatedAccountDetails'
+        bankAccountDetails:
+          $ref: '#/components/schemas/MaskedBankAccountDetails'
+        transactionLimits:
+          $ref: '#/components/schemas/TransactionLimits'
+        userInformation:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1UserInformation'
+    GoogleStandardPaymentsTypesV1Timestamp:
+      type: object
+      properties:
+        epochMillis:
+          type: string
+    GoogleStandardPaymentsTypesV1UserInformation:
+      type: object
+      properties:
+        name:
+          type: string
+        addressLine:
+          type: array
+          items:
+            type: string
+        localityName:
+          type: string
+        administrativeAreaName:
+          type: string
+        postalCodeNumber:
+          type: string
+        countryCode:
+          type: string
+        phone:
+          type: string
+        emailAddress:
+          type: string
+    GoogleStandardPaymentsTypesV2UserAuthenticationFailed:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2RawResult:
+      type: object
+      properties:
+        scope:
+          type: string
+        rawCode:
+          type: string
+    GoogleStandardPaymentsTypesV2AccountNotEligible:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2OtpNotMatched:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2OtpAlreadyUsed:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2OtpLimitReached:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    DisassociateAccountRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        googlePaymentToken:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1GooglePaymentToken'
+        vendorPaymentToken:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1VendorPaymentToken'
+    GoogleStandardPaymentsTypesV1GooglePaymentToken:
+      type: object
+      properties:
+        issuerId:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1IssuerId'
+        token:
+          type: string
+    GoogleStandardPaymentsTypesV3ChallengeResults:
+      type: object
+      properties:
+        challengeOptionId:
+          type: string
+        fidoAssertion:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV3FidoAssertion'
+    GoogleStandardPaymentsTypesV3FidoAssertion:
+      type: object
+      properties:
+        rawId:
+          type: string
+        id:
+          type: string
+        response:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV3FidoAssertionResponse'
+        type:
+          type: string
+    GoogleStandardPaymentsTypesV3FidoAssertionResponse:
+      type: object
+      properties:
+        authenticatorData:
+          type: string
+        signature:
+          type: string
+        userHandle:
+          type: string
+        clientDataJSON:
+          type: string
+    GoogleStandardPaymentsTypesV1IssuerId:
+      type: object
+      properties:
+        value:
+          type: string
+    GoogleStandardPaymentsTypesV1VendorPaymentToken:
+      type: object
+      properties:
+        issuerId:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1IssuerId'
+        token:
+          type: string
+    DisassociateAccountResponse:
+      type: object
+      properties:
+        responseHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+        result:
+          $ref: '#/components/schemas/DisassociateAccountResponseDisassociateAccountResult'
+    DisassociateAccountResponseDisassociateAccountResult:
+      type: object
+      properties:
+        success:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+    TransferFundsRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        googlePaymentToken:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1GooglePaymentToken'
+        vendorPaymentToken:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1VendorPaymentToken'
+        transactionDescription:
+          type: string
+        amount:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1Amount'
+        payeeProxy:
+          $ref: '#/components/schemas/PayeeProxyDestination'
+        getTransferFundsQuotationRequestId:
+          type: string
+        challengeResults:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV3ChallengeResults'
+    GetTransferFundsQuotationRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        associationId:
+          type: string
+        transactionDescription:
+          type: string
+        amount:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1Amount'
+        payeeProxy:
+          $ref: '#/components/schemas/PayeeProxyDestination'
+        googlePaymentToken:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2GooglePaymentToken'
+    GetTransferFundsQuotationResponse:
+      description: GetTransferFundsQuotationResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              responseHeader:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+              result:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV3Result'
+          example: |-
+            {
+              "responseHeader": {
+                "responseTimestamp": {
+                  "epochMillis": "1502220196078"
+                }
+              },
+              "result": {
+                "success": {
+                  "feeAmount": {
+                    "amountMicros": "1000",
+                    "currencyCode": "SGD"
+                  },
+                  "challengeOptions": [{
+                    "challengeOptionId": "8StMrYBbh",
+                    "fido": {
+                      "challenge": "4wevDYZnwprytGf5rn6ydyxQQtBY",
+                      "allowCredentials": [{
+                        "type": "public-key",
+                        "id": "Aad50Szy7ZFb8f7wdfMmFO"
+                      }]
+                    }
+                  }]
+                }
+              }
+            }
+            
+
+    GoogleStandardPaymentsTypesV3Result:
+      properties:
+        success:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV3Success'
+    GoogleStandardPaymentsTypesV3Success:
+      properties:
+        feeAmount:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Amount'
+        challengeOptions:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV3ChallengeOptions'
+    GoogleStandardPaymentsTypesV3ChallengeOptions:
+      properties:
+        challengeOptionId:
+          type: string
+        fido:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV3Fido'
+    GoogleStandardPaymentsTypesV3Fido:
+      properties:
+        challenge:
+          type: string
+        allowCredentials:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV3AllowCredentials'
+    GoogleStandardPaymentsTypesV3AllowCredentials:
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+    GoogleStandardPaymentsTypesV1Amount:
+      type: object
+      properties:
+        amountMicros:
+          type: string
+        currencyCode:
+          type: string
+    GoogleBankAccount:
+      type: object
+      properties:
+        bankAccountId:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2BankAccountIdentifier'
+    DestinationBankAccount:
+      type: object
+      properties:
+        bankAccountId:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2BankAccountIdentifier'
+        bankAccountOwner:
+          $ref: '#/components/schemas/BankAccountOwner'
+    BankAccountOwner:
+      type: object
+      properties:
+        name:
+          type: string
+    PayeeProxyDestination:
+      type: object
+      properties:
+        payeeProxyKey:
+          $ref: '#/components/schemas/PayeeProxyKey'
+        payeeProxyLookupRequestId:
+          type: string
+    PayeeProxyKey:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        nationalId:
+          $ref: '#/components/schemas/ProxyKeyNationalId'
+        businessId:
+          type: string
+        virtualPaymentAddress:
+          type: string
+        networkId:
+          type: string
+    ProxyKeyNationalId:
+      type: object
+      properties:
+        nationalId:
+          type: string
+        issuingCountryCode:
+          type: string
+    TransferFundsResponse:
+      description: TransferFundsResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              responseHeader:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+              paymentIntegratorTransactionId:
+                type: string
+              result:
+                $ref: '#/components/schemas/TransferFundsResponseTransferFundsResult'
+              resultNotKnownYet:
+                $ref: '#/components/schemas/TransactionResultNotKnownYet'
+          example: |-
+            {
+              "responseHeader": {
+                "responseTimestamp": {
+                  "epochMillis": "1502220196078"
+                }
+              },
+              "result": {"success": {}},
+              "paymentIntegratorTransactionId": "transactionRequestId"
+            }
+    TransferFundsResponseTransferFundsResult:
+      type: object
+      properties:
+        success:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        chargeExceedsTransactionLimit:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ChargeExceedsTransactionLimit'
+        chargeExceedsDailyLimit:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ChargeExceedsDailyLimit'
+        chargeExceedsMonthlyLimit:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ChargeExceedsMonthlyLimit'
+        chargeUnderLimit:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ChargeUnderLimit'
+        insufficientFunds:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2InsufficientFunds'
+        accountDoesNotSupportCurrency:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2AccountDoesNotSupportCurrency'
+        accountClosed:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2AccountClosed'
+        accountClosedAccountTakenOver:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2AccountClosedAccountTakenOver'
+        accountOnHold:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2AccountOnHold'
+        accountClosedFraud:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2AccountClosedFraud'
+        googlePaymentTokenInvalidatedByUser:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2GooglePaymentTokenInvalidatedByUser'
+        tokenRefreshRequired:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2TokenRefreshRequired'
+        payeeProxyNotRegistered:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2PayeeProxyNotRegistered'
+    GoogleStandardPaymentsTypesV2ChargeExceedsTransactionLimit:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+        transactionLimit:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Amount'
+    GoogleStandardPaymentsTypesV2ChargeExceedsDailyLimit:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2ChargeExceedsMonthlyLimit:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2ChargeUnderLimit:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+        minimumTransactionLimit:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Amount'
+    GoogleStandardPaymentsTypesV2InsufficientFunds:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+        currentBalance:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Amount'
+    GoogleStandardPaymentsTypesV2AccountDoesNotSupportCurrency:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2AccountClosed:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2AccountClosedAccountTakenOver:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2AccountOnHold:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2AccountClosedFraud:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2GooglePaymentTokenInvalidatedByUser:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2TokenRefreshRequired:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    GoogleStandardPaymentsTypesV2PayeeProxyNotRegistered:
+      type: object
+      properties:
+        rawResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RawResult'
+    TransactionResultNotKnownYet:
+      type: object
+      properties:
+        creditStatusUnknown:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+    DisburseRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        sourceGoogleBankAccount:
+          $ref: '#/components/schemas/GoogleBankAccount'
+        destinationBankAccount:
+          $ref: '#/components/schemas/DestinationBankAccount'
+        payeeProxyKey:
+          $ref: '#/components/schemas/PayeeProxyKey'
+        amount:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV1Amount'
+        transactionDescription:
+          type: string
+    DisburseResponse:
+      type: object
+      properties:
+        responseHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+        paymentIntegratorTransactionId:
+          type: string
+        result:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesBankingFopV2DisburseResult'
+        resultNotKnownYet:
+          $ref: '#/components/schemas/TransactionResultNotKnownYet'
+    GoogleStandardPaymentsTypesBankingFopV2DisburseResult:
+      type: object
+      properties:
+        success:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        accountDoesNotSupportCurrency:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2AccountDoesNotSupportCurrency'
+        accountClosed:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2AccountClosed'
+        payeeProxyNotRegistered:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2PayeeProxyNotRegistered'
+    GetTransferFundsTransactionStatusRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        transferFundsRequestId:
+          type: string
+    GetTransferFundsTransactionStatusResponse:
+      type: object
+      properties:
+        responseHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+        result:
+          $ref: '#/components/schemas/GetTransactionStatusResult'
+        transferFundsResult:
+          $ref: '#/components/schemas/TransferFundsResponseTransferFundsResult'
+        transactionDoesNotExist:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        resultNotKnownYet:
+          $ref: '#/components/schemas/TransactionResultNotKnownYet'
+    GetTransactionStatusResult:
+      type: object
+      properties:
+        success:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+    GetDisburseTransactionStatusRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        disburseRequestId:
+          type: string
+        paymentIntegratorAccountId:
+          type: string
+    GetDisburseTransactionStatusResponse:
+      type: object
+      properties:
+        responseHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+        result:
+          $ref: '#/components/schemas/GetTransactionStatusResult'
+        disburseResult:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesBankingFopV2DisburseResult'
+        transactionDoesNotExist:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+        resultNotKnownYet:
+          $ref: '#/components/schemas/TransactionResultNotKnownYet'
+    GetPayeeProxyRegistrationStatusRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        proxyKey:
+          $ref: '#/components/schemas/PayeeProxyKey'
+    GetPayeeProxyRegistrationStatusResponse:
+      type: object
+      properties:
+        responseHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+        registrationStatus:
+          type: string
+          enum:
+            - PAYEE_PROXY_REGISTRATION_STATUS_UNSPECIFIED
+            - REGISTERED
+            - NOT_REGISTERED
+    GetPayeeProxyDisplayInfoRequest:
+      type: object
+      properties:
+        requestHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2RequestHeader'
+        proxyKey:
+          $ref: '#/components/schemas/PayeeProxyKey'
+        associationId:
+          type: string
+    GetPayeeProxyDisplayInfoResponse:
+      type: object
+      properties:
+        responseHeader:
+          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+        displayInfoResult:
+          $ref: '#/components/schemas/GetPayeeProxyDisplayInfoResponseGetPayeeProxyDisplayInfoResult'
+    GetPayeeProxyDisplayInfoResponseGetPayeeProxyDisplayInfoResult:
+      type: object
+      properties:
+        success:
+          $ref: '#/components/schemas/PayeeProxyDisplayInfoSuccess'
+        failure:
+          $ref: '#/components/schemas/PayeeProxyDisplayInfoFailure'
+    PayeeProxyDisplayInfoSuccess:
+      type: object
+      properties:
+        displayInfo:
+          $ref: '#/components/schemas/PayeeProxyDisplayInfo'
+    PayeeProxyDisplayInfo:
+      type: object
+      properties:
+        displayName:
+          type: string
+    PayeeProxyDisplayInfoFailure:
+      type: object
+      properties:
+        failureReason:
+          type: string
+          enum:
+            - PAYEE_PROXY_DISPLAY_INFO_FAILURE_REASON_UNSPECIFIED
+            - PROXY_KEY_NOT_REGISTERED

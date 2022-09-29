@@ -1,0 +1,52 @@
+version: "3.7"
+
+services:
+  ttk-sender-backend:
+    image: mojaloop/ml-testing-toolkit:v15.0.0
+    user: root
+    volumes:
+      - "./ttk-sender/spec_files:/opt/app/spec_files"
+    ports:
+      - "15050:5050"
+    command:
+      - sh
+      - -c
+      - "npm start"
+  ttk-sender-ui:
+    image: mojaloop/ml-testing-toolkit-ui:v15.0.0
+    ports:
+      - "16060:6060"
+    environment:
+      - API_BASE_URL=http://localhost:15050
+      - AUTH_ENABLED=FALSE
+    command:
+      - sh
+      - /usr/share/nginx/start.sh
+  ttk-receiver-backend:
+    image: mojaloop/ml-testing-toolkit:v15.0.0
+    user: root
+    volumes:
+      - "./ttk-receiver/spec_files:/opt/app/spec_files"
+    ports:
+      - "4040:4040"
+      - "5050:5050"
+    command:
+      - sh
+      - -c
+      - "npm start"
+  ttk-receiver-ui:
+    image: mojaloop/ml-testing-toolkit-ui:v15.0.0
+    ports:
+      - "6060:6060"
+    environment:
+      - API_BASE_URL=http://localhost:5050
+      - AUTH_ENABLED=FALSE
+    command:
+      - sh
+      - /usr/share/nginx/start.sh
+
+networks:
+  default:
+    name: mojaloop-testing-toolkit
+
+

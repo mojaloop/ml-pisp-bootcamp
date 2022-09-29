@@ -1,0 +1,126 @@
+[
+  {
+    "ruleId": 1,
+    "priority": 1,
+    "description": "post /v3/getTransferFundsQuotation",
+    "apiVersion": {
+      "minorVersion": 3,
+      "majorVersion": 0,
+      "type": "gsp-api-v3draft",
+      "specFile": "spec_files/api_definitions/gsp-api-v3draft/api_spec.yaml",
+      "callbackMapFile": "spec_files/api_definitions/gsp-api-v3draft/callback_map.json",
+      "responseMapFile": "spec_files/api_definitions/gsp-api-v3draft/response_map.json",
+      "jsfRefFile": "spec_files/api_definitions/gsp-api-v3draft/mockRef.json",
+      "triggerTemplatesFolder": "spec_files/api_definitions/gsp-api-v3draft/trigger_templates"
+    },
+    "conditions": {
+      "all": [
+        {
+          "fact": "operationPath",
+          "operator": "equal",
+          "value": "/v3/getTransferFundsQuotation"
+        },
+        {
+          "fact": "method",
+          "operator": "equal",
+          "value": "post"
+        }
+      ]
+    },
+    "event": {
+      "method": null,
+      "path": null,
+      "params": {
+        "body": {
+          "responseHeader": {
+            "responseTimestamp": {
+              "epochMillis": "1502220196078"
+            }
+          },
+          "result": {
+            "success": {
+              "feeAmount": {
+                "amountMicros": "1000",
+                "currencyCode": "SGD"
+              },
+              "challengeOptions": [
+                {
+                  "challengeOptionId": "8StMrYBbh",
+                  "fido": {
+                    "challenge": "4wevDYZnwprytGf5rn6ydyxQQtBY",
+                    "allowCredentials": [
+                      {
+                        "type": "public-key",
+                        "id": "Aad50Szy7ZFb8f7wdfMmFO"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "statusCode": "200",
+        "scripts": {
+          "scriptingEngine": "postman"
+        }
+      },
+      "type": "FIXED_RESPONSE"
+    },
+    "type": "response",
+    "version": 1
+  },
+  {
+    "ruleId": 2,
+    "priority": 1,
+    "description": "post /v3/transferFunds",
+    "apiVersion": {
+      "minorVersion": 3,
+      "majorVersion": 0,
+      "type": "gsp-api-v3draft",
+      "specFile": "spec_files/api_definitions/gsp-api-v3draft/api_spec.yaml",
+      "callbackMapFile": "spec_files/api_definitions/gsp-api-v3draft/callback_map.json",
+      "responseMapFile": "spec_files/api_definitions/gsp-api-v3draft/response_map.json",
+      "jsfRefFile": "spec_files/api_definitions/gsp-api-v3draft/mockRef.json",
+      "triggerTemplatesFolder": "spec_files/api_definitions/gsp-api-v3draft/trigger_templates"
+    },
+    "conditions": {
+      "all": [
+        {
+          "fact": "operationPath",
+          "operator": "equal",
+          "value": "/v3/transferFunds"
+        },
+        {
+          "fact": "method",
+          "operator": "equal",
+          "value": "post"
+        }
+      ]
+    },
+    "event": {
+      "method": null,
+      "path": null,
+      "params": {
+        "body": {
+          "responseHeader": {
+            "responseTimestamp": {
+              "epochMillis": "1502220196078"
+            }
+          },
+          "result": {
+            "success": {}
+          },
+          "paymentIntegratorTransactionId": "transactionRequestId"
+        },
+        "statusCode": "200",
+        "scripts": {
+          "scriptingEngine": "postman"
+        }
+      },
+      "type": "FIXED_RESPONSE"
+    },
+    "type": "response",
+    "version": 1
+  }
+]
