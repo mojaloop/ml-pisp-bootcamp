@@ -1,0 +1,124 @@
+{
+  "name": "multi",
+  "test_cases": [
+    {
+      "id": 1,
+      "name": "P2P",
+      "fileInfo": {
+        "path": "new-folder/gsp.json"
+      },
+      "requests": [
+        {
+          "id": 1,
+          "description": "Get Quotation",
+          "apiVersion": {
+            "minorVersion": 3,
+            "majorVersion": 0,
+            "type": "gsp-api-v3draft",
+            "specFile": "spec_files/api_definitions/gsp-api-v3draft/api_spec.yaml",
+            "callbackMapFile": "spec_files/api_definitions/gsp-api-v3draft/callback_map.json",
+            "responseMapFile": "spec_files/api_definitions/gsp-api-v3draft/response_map.json",
+            "jsfRefFile": "spec_files/api_definitions/gsp-api-v3draft/mockRef.json",
+            "triggerTemplatesFolder": "spec_files/api_definitions/gsp-api-v3draft/trigger_templates"
+          },
+          "operationPath": "/v3/getTransferFundsQuotation",
+          "path": "/v3/getTransferFundsQuotation",
+          "method": "post",
+          "body": {
+            "requestHeader": {
+              "protocolVersion": {
+                "major": 3
+              },
+              "requestId": "bWVyY2hhbnQgdHJhbnN",
+              "requestTimestamp": {
+                "epochMillis": "1502220196077"
+              },
+              "paymentIntegratorAccountId": "Mojaloop"
+            },
+            "googlePaymentToken": {
+              "issuerId": {
+                "value": "Mojaloop"
+              },
+              "token": "payer@testbank"
+            },
+            "associationId": "ZXhhbXBsZSB1bmlxdWUgcGF5bWVudC",
+            "transactionDescription": "Payment",
+            "amount": {
+              "amountMicros": "5000000",
+              "currencyCode": "SGD"
+            },
+            "payeeProxy": {
+              "payeeProxyKey": {
+                "networkId": "paynow",
+                "phoneNumber": "+6577778888"
+              },
+              "payeeProxyLookupRequestId": "bWVyY2hhbnQgdHJhbnN"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "description": "Approve",
+          "apiVersion": {
+            "minorVersion": 3,
+            "majorVersion": 0,
+            "type": "gsp-api-v3draft",
+            "specFile": "spec_files/api_definitions/gsp-api-v3draft/api_spec.yaml",
+            "callbackMapFile": "spec_files/api_definitions/gsp-api-v3draft/callback_map.json",
+            "responseMapFile": "spec_files/api_definitions/gsp-api-v3draft/response_map.json",
+            "jsfRefFile": "spec_files/api_definitions/gsp-api-v3draft/mockRef.json",
+            "triggerTemplatesFolder": "spec_files/api_definitions/gsp-api-v3draft/trigger_templates"
+          },
+          "operationPath": "/v3/transferFunds",
+          "path": "/v3/transferFunds",
+          "method": "post",
+          "body": {
+            "requestHeader": {
+              "protocolVersion": {
+                "major": 3
+              },
+              "requestId": "bWVyY2hhbnQgdHJhbnN",
+              "requestTimestamp": {
+                "epochMillis": "1502220196077"
+              },
+              "paymentIntegratorAccountId": "Mojaloop"
+            },
+            "googlePaymentToken": {
+              "issuerId": {
+                "value": "Mojaloop"
+              },
+              "token": "payer@testbank"
+            },
+            "transactionDescription": "Payment",
+            "amount": {
+              "amountMicros": "5050000",
+              "currencyCode": "SGD"
+            },
+            "payeeProxy": {
+              "payeeProxyKey": {
+                "networkId": "paynow",
+                "phoneNumber": "+6577778888"
+              },
+              "payeeProxyLookupRequestId": "bWVyY2hhbnQgdHJhbnN"
+            },
+            "getTransferFundsQuotationRequestId": "bWVyY2hhbnQgdHJhbnN",
+            "challengeResults": {
+              "challengeOptionId": "8StMrYBbh",
+              "fidoAssertion": {
+                "rawId": "Aad50Szy7ZFb8f7wd",
+                "id": "Aad50Szy7ZFb8f7wdfMmFO",
+                "response": {
+                  "authenticatorData": "zHUM-fXe8fPTc7IQdAU8xhonRmZ",
+                  "signature": "MEUCIHxzf1KZNJTb831gqw0oit-6ms8Do",
+                  "userHandle": "Kosv9fPtkDoh4Oz7Yq_pVgWHS8H",
+                  "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V"
+                },
+                "type": "public-key"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
