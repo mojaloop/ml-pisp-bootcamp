@@ -16,3 +16,8 @@ docker-compose up
 6. Select the imported file in the collection manager
 7. You can explore the test cases there
 8. You can explore the GSP API in `API Manager`
+
+## TTK Demo UI
+
+The code is at the following link
+https://github.com/mojaloop/ml-testing-toolkit-ui/tree/feature/ml-pisp-bootcamp-demo
