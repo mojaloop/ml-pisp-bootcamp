@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "694821ba-f962-477f-9425-ac54a2172bf3",
+		"name": "gsp-connector",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "218620"
+	},
+	"item": [
+		{
+			"name": "POST /v3/getTransferFundsQuotation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n  \"requestHeader\": {\n    \"protocolVersion\": {\n      \"major\": 3\n    },\n    \"requestId\": \"bWVyY2hhbnQgdHJhbnN\",\n    \"requestTimestamp\": {\n      \"epochMillis\": \"1502220196077\"\n    },\n    \"paymentIntegratorAccountId\": \"Mojaloop\"\n  },\n  \"googlePaymentToken\": {\n    \"issuerId\": {\n      \"value\": \"Mojaloop\"\n    },\n    \"token\": \"payer@testbank\"\n  },\n  \"associationId\": \"ZXhhbXBsZSB1bmlxdWUgcGF5bWVudC\",\n  \"transactionDescription\": \"Payment\",\n  \"amount\": {\n    \"amountMicros\": \"5000000\",\n    \"currencyCode\": \"SGD\"\n  },\n  \"payeeProxy\": {\n    \"payeeProxyKey\": {\n      \"networkId\": \"paynow\",\n      \"phoneNumber\": \"+6577778888\"\n    },\n    \"payeeProxyLookupRequestId\": \"bWVyY2hhbnQgdHJhbnN\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/v3/getTransferFundsQuotation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v3",
+						"getTransferFundsQuotation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /v3/transferFunds",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"requestHeader\": {\n        \"protocolVersion\": {\n            \"major\": 3\n        },\n        \"requestId\": \"bWVyY2hhbnQgdHJhbnN\",\n        \"requestTimestamp\": {\n            \"epochMillis\": \"1502220196077\"\n        },\n        \"paymentIntegratorAccountId\": \"Mojaloop\"\n    },\n    \"googlePaymentToken\": {\n        \"issuerId\": {\n            \"value\": \"Mojaloop\"\n        },\n        \"token\": \"payer@testbank\"\n    },\n    \"transactionDescription\": \"Payment\",\n    \"amount\": {\n        \"amountMicros\": \"5050000\",\n        \"currencyCode\": \"SGD\"\n    },\n    \"payeeProxy\": {\n        \"payeeProxyKey\": {\n            \"networkId\": \"paynow\",\n            \"phoneNumber\": \"+6577778888\"\n        },\n        \"payeeProxyLookupRequestId\": \"bWVyY2hhbnQgdHJhbnN\"\n    },\n    \"getTransferFundsQuotationRequestId\": \"bWVyY2hhbnQgdHJhbnN\",\n    \"challengeResults\": {\n        \"challengeOptionId\": \"64aa1f07-801c-4610-be8a-0020b301607d\",\n        \"fidoAssertion\": {\n            \"rawId\": \"Aad50Szy7ZFb8f7wd\",\n            \"id\": \"Aad50Szy7ZFb8f7wdfMmFO\",\n            \"response\": {\n                \"authenticatorData\": \"zHUM-fXe8fPTc7IQdAU8xhonRmZ\",\n                \"signature\": \"MEUCIHxzf1KZNJTb831gqw0oit-6ms8Do\",\n                \"userHandle\": \"Kosv9fPtkDoh4Oz7Yq_pVgWHS8H\",\n                \"clientDataJSON\": \"eyJ0eXBlIjoid2ViYXV0aG4uZ2V\"\n            },\n            \"type\": \"public-key\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/v3/transferFunds",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v3",
+						"transferFunds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:4040/thirdpartyTransaction/b51ec534-ee48-4575-b6a9-ead2955b8069/initiate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "traceparent",
+						"value": "00-aabb3ccc7d6062b507f760d3a4dfbdd1-0123456789abcdef0-00"
+					},
+					{
+						"key": "user-agent",
+						"value": "axios/0.27.2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"payee\":{\"partyIdInfo\":{\"partyIdType\":\"MSISDN\",\"partyIdentifier\":\"9876543210\",\"fspId\":\"dfspb\"}},\"payer\":{\"partyIdType\":\"THIRD_PARTY_LINK\",\"partyIdentifier\":\"1234567890\",\"fspId\":\"dfspa\"},\"amountType\":\"SEND\",\"amount\":{\"amount\":\"10\",\"currency\":\"EUR\"},\"transactionType\":{\"scenario\":\"TRANSFER\",\"initiator\":\"PAYER\",\"initiatorType\":\"CONSUMER\"},\"expiration\":\"2044-07-15T22:17:28.985-01:00\"}"
+				},
+				"url": {
+					"raw": "http://localhost:4040/thirdpartyTransaction/b51ec534-ee48-4575-b6a9-ead2955b8069/initiate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4040",
+					"path": [
+						"thirdpartyTransaction",
+						"b51ec534-ee48-4575-b6a9-ead2955b8069",
+						"initiate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:4040/thirdpartyTransaction/b51ec534-ee48-4575-b6a9-ead2955b8069/approve GENERIC",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "traceparent",
+						"value": "00-aabb3ccc7d6062b507f760d3a4dfbdd1-0123456789abcdef0-00"
+					},
+					{
+						"key": "user-agent",
+						"value": "axios/0.27.2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n  \"authorizationResponse\": {\n    \"responseType\": \"ACCEPTED\",\n    \"signedPayload\": {\n      \"signedPayloadType\": \"GENERIC\",\n      \"genericSignedPayload\": \"sdjsdjdsjk\"\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4040/thirdpartyTransaction/b51ec534-ee48-4575-b6a9-ead2955b8069/approve",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4040",
+					"path": [
+						"thirdpartyTransaction",
+						"b51ec534-ee48-4575-b6a9-ead2955b8069",
+						"approve"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:4040/thirdpartyTransaction/b51ec534-ee48-4575-b6a9-ead2955b8069/approve FIDO",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "traceparent",
+						"value": "00-aabb3ccc7d6062b507f760d3a4dfbdd1-0123456789abcdef0-00"
+					},
+					{
+						"key": "user-agent",
+						"value": "axios/0.27.2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"authorizationResponse\": {\n    \"responseType\": \"ACCEPTED\",\n    \"signedPayload\": {\n      \"signedPayloadType\": \"FIDO\",\n      \"fidoSignedPayload\": {\n        \"id\": \"45c-TkfkjQovQeAWmOy-RLBHEJ_e4jYzQYgD8VdbkePgM5d98BaAadadNYrknxgH0jQEON8zBydLgh1EqoC9DA\",\n        \"rawId\": \"45c+TkfkjQovQeAWmOy+RLBHEJ/e4jYzQYgD8VdbkePgM5d98BaAadadNYrknxgH0jQEON8zBydLgh1EqoC9DA==\",\n        \"response\": {\n          \"authenticatorData\": \"SZYN5YgOjGh0NBcPZHZgW4/krrmihjLHmVzzuoMdl2MBAAAACA==\",\n          \"clientDataJSON\":\n            \"eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQUFBQUFBQUFBQUFBQUFBQUFBRUNBdyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIxODEiLCJjcm9zc09yaWdpbiI6ZmFsc2UsIm90aGVyX2tleXNfY2FuX2JlX2FkZGVkX2hlcmUiOiJkbyBub3QgY29tcGFyZSBjbGllbnREYXRhSlNPTiBhZ2FpbnN0IGEgdGVtcGxhdGUuIFNlZSBodHRwczovL2dvby5nbC95YWJQZXgifQ==\",\n          \"signature\":\n            \"MEUCIDcJRBu5aOLJVc/sPyECmYi23w8xF35n3RNhyUNVwQ2nAiEA+Lnd8dBn06OKkEgAq00BVbmH87ybQHfXlf1Y4RJqwQ8=\"\n        },\n        \"type\": \"public-key\"\n      }\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4040/thirdpartyTransaction/b51ec534-ee48-4575-b6a9-ead2955b8069/approve",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4040",
+					"path": [
+						"thirdpartyTransaction",
+						"b51ec534-ee48-4575-b6a9-ead2955b8069",
+						"approve"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
