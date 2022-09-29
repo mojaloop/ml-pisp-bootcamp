@@ -10,6 +10,9 @@ sequenceDiagram
     participant PayeeDFSP as Payee DFSP
     participant PayeeMobileSim as Payee Mobile Sim
 
+    Note left of PayerMobileSim: Use-case steps 1-2. by Payer
+    Note left of PayerMobileSim: Use-case steps 3. Innitiate Process
+
     PayerMobileSim->>+GSPAdapter: Party Lookup
     GSPAdapter->>ThirdPartyAdapter: POST /thirdpartyTransaction/partyLookup
     ThirdPartyAdapter->>MojaloopSwitch: GET /parties
@@ -18,7 +21,7 @@ sequenceDiagram
     MojaloopSwitch->>ThirdPartyAdapter: PUT /parties
     ThirdPartyAdapter-->>GSPAdapter: RESP
     GSPAdapter-->>PayerMobileSim: RESP
-    Note left of PayerMobileSim: Confirmation
+    Note left of PayerMobileSim:  Use-case steps 3. Internal PISP Confirmation
 
     PayerMobileSim-->>GSPAdapter: Initiate Transfer
     GSPAdapter->>ThirdPartyAdapter: POST /thirdpartyTransaction/{ID}/initiate
@@ -34,8 +37,9 @@ sequenceDiagram
     MojaloopSwitch->>ThirdPartyAdapter: POST /thirdpartyRequests/authorizations
     ThirdPartyAdapter-->>GSPAdapter: RESP
     GSPAdapter-->>PayerMobileSim: RESP
-    Note left of PayerMobileSim: Authorization
+    Note left of PayerMobileSim:  Use-case steps 4. Authorization by Payer
 
+    Note left of PayerMobileSim:  Use-case steps 5. Perform Transfer
     PayerMobileSim-->>GSPAdapter: Authorize the Transfer
     GSPAdapter->>ThirdPartyAdapter: POST /thirdpartyTransaction/{ID}/approve
     ThirdPartyAdapter->>MojaloopSwitch: PUT /thirdpartyRequests/authorizations/{authorizationRequestId}
@@ -45,11 +49,13 @@ sequenceDiagram
     PayerDFSP->>MojaloopSwitch: POST /transfers
     MojaloopSwitch->>PayeeDFSP: POST /transfers
     PayeeDFSP->>MojaloopSwitch: PUT /transfers
+    PayeeDFSP->>PayeeMobileSim: NOTIFICATION
+    Note left of PayeeMobileSim:  Use-case steps 6.b Payment Notification
     MojaloopSwitch->>PayerDFSP: PUT /transfers
     PayerDFSP->>MojaloopSwitch: PATCH /thirdpartyRequests/transactions/{transactionRequestId}
     MojaloopSwitch->>ThirdPartyAdapter: PATCH /thirdpartyRequests/transactions/{transactionRequestId}
     ThirdPartyAdapter-->>GSPAdapter: RESP
     GSPAdapter-->>PayerMobileSim: RESP
-    Note left of PayerMobileSim: Success Notification
+    Note left of PayerMobileSim:  Use-case steps 6.a Success Notification
 
 ```
