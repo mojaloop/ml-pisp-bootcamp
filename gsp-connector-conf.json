@@ -1,0 +1,11 @@
+{
+  "requestProcessingTimeoutSeconds": 30,
+  "inspect": {
+    "depth": 4,
+    "showHidden": false,
+    "color": true
+  },
+  "shared": {
+    "thirdpartySdkEndpoint": "http://ttk-backend:4040"
+  }
+}

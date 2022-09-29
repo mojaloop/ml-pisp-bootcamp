@@ -1,0 +1,3 @@
+[submodule "gsp-connector"]
+	path = gsp-connector
+	url = https://github.com/mojaloop/gsp-connector.git

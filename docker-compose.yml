@@ -14,6 +14,7 @@ services:
       - sh
       - -c
       - "npm start"
+
   ttk-ui:
     image: mojaloop/ml-testing-toolkit-ui:v15.0.0
     ports:
@@ -25,8 +26,34 @@ services:
       - sh
       - /usr/share/nginx/start.sh
 
+  gsp-connector-svc:
+    image: mojaloop/gsp-connector:local
+    container_name: gsp-connector-svc
+    build:
+      context: ./gsp-connector
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${PWD}/gsp-connector-conf.json:/opt/app/config/default.json:ro
+    ## Useful for debugging
+    # command:
+    #   - sh
+    #   - -c
+    #   - "sleep infinity"
+    user: root # Set Root so we can install Curl for Healthchecks
+    healthcheck:
+      test: [
+        "CMD" ,
+        "apk", "add", "--no-cache", "curl", # Install curl
+        "&&",
+        "curl", "-f", "http://localhost:3000" # Check if api is up
+        ]
+      timeout: 20s
+      retries: 10
+      start_period: 40s
+      interval: 30s
+
 networks:
   default:
     name: mojaloop-testing-toolkit
-
-
