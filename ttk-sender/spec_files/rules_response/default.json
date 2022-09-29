@@ -40,7 +40,7 @@
           "result": {
             "success": {
               "feeAmount": {
-                "amountMicros": "1000",
+                "amountMicros": "2",
                 "currencyCode": "SGD"
               },
               "challengeOptions": [
@@ -112,6 +112,62 @@
             "success": {}
           },
           "paymentIntegratorTransactionId": "transactionRequestId"
+        },
+        "statusCode": "200",
+        "scripts": {
+          "scriptingEngine": "postman"
+        }
+      },
+      "type": "FIXED_RESPONSE"
+    },
+    "type": "response",
+    "version": 1
+  },
+  {
+    "ruleId": 3,
+    "priority": 1,
+    "description": "post /v2/getPayeeProxyDisplayInfo",
+    "apiVersion": {
+      "minorVersion": 3,
+      "majorVersion": 0,
+      "type": "gsp-api-v3draft",
+      "specFile": "spec_files/api_definitions/gsp-api-v3draft/api_spec.yaml",
+      "callbackMapFile": "spec_files/api_definitions/gsp-api-v3draft/callback_map.json",
+      "responseMapFile": "spec_files/api_definitions/gsp-api-v3draft/response_map.json",
+      "jsfRefFile": "spec_files/api_definitions/gsp-api-v3draft/mockRef.json",
+      "triggerTemplatesFolder": "spec_files/api_definitions/gsp-api-v3draft/trigger_templates"
+    },
+    "conditions": {
+      "all": [
+        {
+          "fact": "operationPath",
+          "operator": "equal",
+          "value": "/v2/getPayeeProxyDisplayInfo"
+        },
+        {
+          "fact": "method",
+          "operator": "equal",
+          "value": "post"
+        }
+      ]
+    },
+    "event": {
+      "method": null,
+      "path": null,
+      "params": {
+        "body": {
+          "responseHeader": {
+            "responseTimestamp": {
+              "epochMillis": "1502220196078"
+            }
+          },
+          "displayInfoResult": {
+            "success": {
+              "displayInfo": {
+                "displayName": "David G"
+              }
+            }
+          }
         },
         "statusCode": "200",
         "scripts": {

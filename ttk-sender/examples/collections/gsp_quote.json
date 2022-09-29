@@ -1,0 +1,59 @@
+{
+  "name": "getTransferFundsQuotation",
+  "test_cases": [
+    {
+      "id": 1,
+      "name": "Get Party Information and Quotation",
+      "requests": [
+        {
+          "id": 1,
+          "description": "getTransferFundsQuotation",
+          "apiVersion": {
+            "minorVersion": 3,
+            "majorVersion": 0,
+            "type": "gsp-api-v3draft",
+            "specFile": "spec_files/api_definitions/gsp-api-v3draft/api_spec.yaml",
+            "callbackMapFile": "spec_files/api_definitions/gsp-api-v3draft/callback_map.json",
+            "responseMapFile": "spec_files/api_definitions/gsp-api-v3draft/response_map.json",
+            "jsfRefFile": "spec_files/api_definitions/gsp-api-v3draft/mockRef.json",
+            "triggerTemplatesFolder": "spec_files/api_definitions/gsp-api-v3draft/trigger_templates"
+          },
+          "operationPath": "/v3/getTransferFundsQuotation",
+          "path": "/v3/getTransferFundsQuotation",
+          "method": "post",
+          "body": {
+            "requestHeader": {
+              "protocolVersion": {
+                "major": 3
+              },
+              "requestId": "bWVyY2hhbnQgdHJhbnN",
+              "requestTimestamp": {
+                "epochMillis": "1502220196077"
+              },
+              "paymentIntegratorAccountId": "Mojaloop"
+            },
+            "googlePaymentToken": {
+              "issuerId": {
+                "value": "Mojaloop"
+              },
+              "token": "payer@testbank"
+            },
+            "associationId": "ZXhhbXBsZSB1bmlxdWUgcGF5bWVudC",
+            "transactionDescription": "Payment",
+            "amount": {
+              "amountMicros": "{$inputs.amount}",
+              "currencyCode": "{$inputs.currency}"
+            },
+            "payeeProxy": {
+              "payeeProxyKey": {
+                "networkId": "paynow",
+                "phoneNumber": "{$inputs.payeePhoneNumber}"
+              },
+              "payeeProxyLookupRequestId": "bWVyY2hhbnQgdHJhbnN"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

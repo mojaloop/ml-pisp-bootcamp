@@ -6,6 +6,7 @@ services:
     user: root
     volumes:
       - "./ttk-sender/spec_files:/opt/app/spec_files"
+      - "./ttk-sender/examples:/opt/app/examples"
     ports:
       - "15050:5050"
     command:

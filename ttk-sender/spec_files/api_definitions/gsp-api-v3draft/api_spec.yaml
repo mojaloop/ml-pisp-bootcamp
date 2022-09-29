@@ -137,7 +137,7 @@ paths:
             schema:
               $ref: '#/components/schemas/GetPayeeProxyRegistrationStatusRequest'
       responses:
-        default:
+        '200':
           $ref: '#/components/schemas/GetPayeeProxyRegistrationStatusResponse'
   /v2/getPayeeProxyDisplayInfo:
     post:
@@ -152,7 +152,7 @@ paths:
             schema:
               $ref: '#/components/schemas/GetPayeeProxyDisplayInfoRequest'
       responses:
-        default:
+        '200':
           $ref: '#/components/schemas/GetPayeeProxyDisplayInfoResponse'
 
 components:
@@ -930,16 +930,20 @@ components:
         transactionDescription:
           type: string
     DisburseResponse:
-      type: object
-      properties:
-        responseHeader:
-          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
-        paymentIntegratorTransactionId:
-          type: string
-        result:
-          $ref: '#/components/schemas/GoogleStandardPaymentsTypesBankingFopV2DisburseResult'
-        resultNotKnownYet:
-          $ref: '#/components/schemas/TransactionResultNotKnownYet'
+      description: TransferFundsResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              responseHeader:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+              paymentIntegratorTransactionId:
+                type: string
+              result:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesBankingFopV2DisburseResult'
+              resultNotKnownYet:
+                $ref: '#/components/schemas/TransactionResultNotKnownYet'
     GoogleStandardPaymentsTypesBankingFopV2DisburseResult:
       type: object
       properties:
@@ -959,18 +963,22 @@ components:
         transferFundsRequestId:
           type: string
     GetTransferFundsTransactionStatusResponse:
-      type: object
-      properties:
-        responseHeader:
-          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
-        result:
-          $ref: '#/components/schemas/GetTransactionStatusResult'
-        transferFundsResult:
-          $ref: '#/components/schemas/TransferFundsResponseTransferFundsResult'
-        transactionDoesNotExist:
-          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
-        resultNotKnownYet:
-          $ref: '#/components/schemas/TransactionResultNotKnownYet'
+      description: TransferFundsResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              responseHeader:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+              result:
+                $ref: '#/components/schemas/GetTransactionStatusResult'
+              transferFundsResult:
+                $ref: '#/components/schemas/TransferFundsResponseTransferFundsResult'
+              transactionDoesNotExist:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+              resultNotKnownYet:
+                $ref: '#/components/schemas/TransactionResultNotKnownYet'
     GetTransactionStatusResult:
       type: object
       properties:
@@ -986,18 +994,22 @@ components:
         paymentIntegratorAccountId:
           type: string
     GetDisburseTransactionStatusResponse:
-      type: object
-      properties:
-        responseHeader:
-          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
-        result:
-          $ref: '#/components/schemas/GetTransactionStatusResult'
-        disburseResult:
-          $ref: '#/components/schemas/GoogleStandardPaymentsTypesBankingFopV2DisburseResult'
-        transactionDoesNotExist:
-          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
-        resultNotKnownYet:
-          $ref: '#/components/schemas/TransactionResultNotKnownYet'
+      description: TransferFundsResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              responseHeader:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+              result:
+                $ref: '#/components/schemas/GetTransactionStatusResult'
+              disburseResult:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesBankingFopV2DisburseResult'
+              transactionDoesNotExist:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Empty'
+              resultNotKnownYet:
+                $ref: '#/components/schemas/TransactionResultNotKnownYet'
     GetPayeeProxyRegistrationStatusRequest:
       type: object
       properties:
@@ -1006,16 +1018,20 @@ components:
         proxyKey:
           $ref: '#/components/schemas/PayeeProxyKey'
     GetPayeeProxyRegistrationStatusResponse:
-      type: object
-      properties:
-        responseHeader:
-          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
-        registrationStatus:
-          type: string
-          enum:
-            - PAYEE_PROXY_REGISTRATION_STATUS_UNSPECIFIED
-            - REGISTERED
-            - NOT_REGISTERED
+      description: TransferFundsResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              responseHeader:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+              registrationStatus:
+                type: string
+                enum:
+                  - PAYEE_PROXY_REGISTRATION_STATUS_UNSPECIFIED
+                  - REGISTERED
+                  - NOT_REGISTERED
     GetPayeeProxyDisplayInfoRequest:
       type: object
       properties:
@@ -1026,12 +1042,16 @@ components:
         associationId:
           type: string
     GetPayeeProxyDisplayInfoResponse:
-      type: object
-      properties:
-        responseHeader:
-          $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
-        displayInfoResult:
-          $ref: '#/components/schemas/GetPayeeProxyDisplayInfoResponseGetPayeeProxyDisplayInfoResult'
+      description: TransferFundsResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              responseHeader:
+                $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2ResponseHeader'
+              displayInfoResult:
+                $ref: '#/components/schemas/GetPayeeProxyDisplayInfoResponseGetPayeeProxyDisplayInfoResult'
     GetPayeeProxyDisplayInfoResponseGetPayeeProxyDisplayInfoResult:
       type: object
       properties:
