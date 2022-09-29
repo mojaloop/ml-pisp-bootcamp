@@ -5,8 +5,8 @@ services:
     image: mojaloop/ml-testing-toolkit:v15.0.0
     user: root
     volumes:
-      - "./ttk-sender/spec_files:/opt/app/spec_files"
-      - "./ttk-sender/examples:/opt/app/examples"
+      - "./ttk/spec_files:/opt/app/spec_files"
+      - "./ttk/examples:/opt/app/examples"
     ports:
       - "4040:4040"
       - "5050:5050"
