@@ -684,6 +684,11 @@ components:
               },
               "result": {
                 "success": {
+                  "payeeProxyLookup": {
+                    "displayInfo": {
+                      "displayName": "Sam Payee"
+                    }
+                  },
                   "feeAmount": {
                     "amountMicros": "1000",
                     "currencyCode": "SGD"
@@ -709,6 +714,8 @@ components:
           $ref: '#/components/schemas/GoogleStandardPaymentsTypesV3Success'
     GoogleStandardPaymentsTypesV3Success:
       properties:
+        payeeProxyLookup:
+          $ref: '#/components/schemas/PayeeProxyDisplayInfoSuccess'
         feeAmount:
           $ref: '#/components/schemas/GoogleStandardPaymentsTypesV2Amount'
         challengeOptions:

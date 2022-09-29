@@ -39,9 +39,14 @@
           },
           "result": {
             "success": {
+              "payeeProxyLookup": {
+                "displayInfo": {
+                  "displayName": "David G"
+                }
+              },
               "feeAmount": {
                 "amountMicros": "2",
-                "currencyCode": "SGD"
+                "currencyCode": "USD"
               },
               "challengeOptions": [
                 {
