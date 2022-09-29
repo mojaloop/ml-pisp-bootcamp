@@ -21,3 +21,35 @@ docker-compose up
 
 The code is at the following link
 https://github.com/mojaloop/ml-testing-toolkit-ui/tree/feature/ml-pisp-bootcamp-demo
+
+## GSP-Connector (Git Sub-module)
+
+This is a git-submodule to this repo.
+
+To initialize sub-modules run the following command:
+
+```bash
+git submodule init
+```
+
+To update the sub-modules run the following command:
+
+```bash
+git submodule update
+```
+
+## Docker-Compose
+
+### Pre-requisites
+
+Ensure that you have initialized the [GSP-Connector Sub-module](#gsp-connector-git-sub-module), and made sure its updated. See [GSP-Connector Sub-module Section](#gsp-connector-git-sub-module).
+
+### Build and Run
+
+```bash
+docker compose build
+```
+
+```bash
+docker compose up
+```
