@@ -14,7 +14,7 @@ sequenceDiagram
 
     Note left of PayerMobileSim: Initiate Payment
     PayerMobileSim->>+GPayServer: Send 10000 UGX <br>to +256 123456789
-    GPayServer->>+GSPAdapter: Send amount 10000 UGX <br>Payee ID +256 123456789 <br> requestId: abc123 <br> POST /GetTransferFundsQuotation
+    GPayServer->>+GSPAdapter: Send amount 10000 UGX <br>Payee ID +256 123456789 <br> requestId: abc123 <br> - <br> POST /GetTransferFundsQuotation
     GSPAdapter->>ThirdPartyAdapter: POST /thirdpartyTransaction/partyLookup
     ThirdPartyAdapter->>MojaloopSwitch: GET /parties
     MojaloopSwitch->>PayeeDFSP: GET /parties
@@ -40,7 +40,7 @@ sequenceDiagram
     Note left of PayerMobileSim: Authorize, Sign challenge
 
     PayerMobileSim->>GPayServer: Yes, send it
-    GPayServer->>+GSPAdapter: Send amount 10,010 UGX <br>Payee ID +256 123456789 <br> quotationRequestId: ijk123 <br> challengeResponse: {...} <br> googlePaymentToken: baz <br> POST /TransferFunds
+    GPayServer->>+GSPAdapter: Send amount 10,010 UGX <br>Payee ID +256 123456789 <br> quotationRequestId: ijk123 <br> challengeResponse: {...} <br> googlePaymentToken: baz <br> - <br> POST /TransferFunds
     GSPAdapter->>ThirdPartyAdapter: POST /thirdpartyTransaction/{ID}/approve
     ThirdPartyAdapter->>MojaloopSwitch: PUT /thirdpartyRequests/authorizations/{authorizationRequestId}
     MojaloopSwitch->>PayerDFSP: PUT /thirdpartyRequests/authorizations/{authorizationRequestId}
