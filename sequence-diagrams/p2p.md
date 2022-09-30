@@ -5,7 +5,7 @@ sequenceDiagram
 
     actor PayerMobileSim as Payer
     participant GPayServer as GPay Server
-    participant GSPAdapter as GSP Adapter
+    participant GSPAdapter as GSP Connector
     participant ThirdPartyAdapter as Third Party Adapter <br>& SDK Adapter
     participant MojaloopSwitch as Mojaloop Switch
     participant PayerDFSP as Payer DFSP
