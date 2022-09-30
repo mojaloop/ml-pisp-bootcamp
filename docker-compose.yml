@@ -16,7 +16,7 @@ services:
       - "npm start"
 
   ttk-ui:
-    image: mojaloop/ml-testing-toolkit-ui:v15.0.0
+    image: mojaloop/ml-testing-toolkit-ui:v15.1.0-snapshot.0
     ports:
       - "6060:6060"
     environment:

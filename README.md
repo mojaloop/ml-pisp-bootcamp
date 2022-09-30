@@ -1,21 +1,42 @@
 # ml-pisp-bootcamp
 https://dfslab.net/mojaloop-bootcamp-for-pisps/
 
-
 ## WireFrame Prototypes
 
 https://drive.google.com/file/d/1Wixa8JdLInXRDZm4vVVk2d1UOQ6K8FC-/view?usp=sharing
 
+## Quick Start
+
+To see the demo in action, please follow the below steps
+1. Clone the repository
+```
+git clone https://github.com/mojaloop/ml-pisp-bootcamp.git
+cd ml-pisp-bootcamp
+```
+2. Initialize and update the sub modules
+```
+git submodule init
+git submodule update
+```
+3. Build the docker images
+```
+docker compose build
+```
+4. Run the services
+```
+docker compose up
+```
+5. Open TTK Mobile Simulator UI at http://localhost:6060/mobilesimulator
+6. Try to make a transfer using the mobile screen
+7. Observe the dynamic sequence diagram and activity log after a successful transfer
+
+
 ## Exploring GSP API using TTK
-```
-docker-compose up
-```
-3. Open TTK Sender UI on http://localhost:16060
-4. Goto `Test Runner` and open `Collection Managaer`
-5. Click on `Import File` and load the TTK test case `gsp.json` from the folder `test-cases`
-6. Select the imported file in the collection manager
-7. You can explore the test cases there
-8. You can explore the GSP API in `API Manager`
+
+1. Follow the Quick Start guide to start the services
+2. Open TTK UI on http://localhost:6060
+3. You can explore the GSP API in `API Manager -> API Documentation`
+
 
 ## TTK Demo UI
 
