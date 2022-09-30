@@ -6,12 +6,13 @@ sequenceDiagram
     actor PayerMobileSim as Payer
     participant GPayServer as GPay Server
     participant GSPAdapter as GSP Adapter
-    participant ThirdPartyAdapter as Third Party Adapter \n& SDK Adapter
+    participant ThirdPartyAdapter as Third Party Adapter <br>& SDK Adapter
     participant MojaloopSwitch as Mojaloop Switch
     participant PayerDFSP as Payer DFSP
     participant PayeeDFSP as Payee DFSP
     actor PayeeMobileSim as Payee
 
+    Note over GPayServer,ThirdPartyAdapter: PISP
     Note left of PayerMobileSim: Initiate Payment
     PayerMobileSim->>+GPayServer: Send 10000 UGX <br>to +256 123456789
     GPayServer->>+GSPAdapter: Send amount 10000 UGX <br>Payee ID +256 123456789 <br> requestId: abc123 <br> - <br> POST /getTransferFundsQuotation

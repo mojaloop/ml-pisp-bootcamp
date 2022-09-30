@@ -103,7 +103,7 @@ POST /thirdpartyTransactions/{transactionRequestId}/initiate
 response: {
   body: {
     "authorization": {
-      "transactionRequestId": "c2470148-1be2-4c0b-aece-aa8dcb92a6cc",
+      "transactionRequestId": "uuid()",
       "transferAmount": {
         "amount": "5.05",
         "currency": "SGD"
@@ -160,10 +160,8 @@ POST /v3/getTransferFundsQuotationRequest Response
       // Running with the assumption that Mojaloop will provide a singular FIDO assertion.
       "challengeOptions": [
         {
-          // challengeOptionId is used in the GSP transferFunds call.
-          // Assuming to identify which authentication method was chosen.
-          // We can have the GSP connector generate this
-          "challengeOptionId": "xxxxxxxxxxxxxxx" || uuid(),
+          // challengeOptionId is used in the GSP transferFunds call, and is the link between the initiated Transfer and the Authorization.
+          "challengeOptionId": initiateResponse.body.transactionId,
           "fido": {
             "challenge": initiateResponse.body.authorization.challenge,
             "allowCredentials": [
