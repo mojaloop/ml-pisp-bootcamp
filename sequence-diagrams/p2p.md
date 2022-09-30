@@ -54,7 +54,7 @@ sequenceDiagram
     PayerDFSP->>MojaloopSwitch: PATCH /thirdpartyRequests/transactions/{transactionRequestId}
     MojaloopSwitch->>ThirdPartyAdapter: PATCH /thirdpartyRequests/transactions/{transactionRequestId}
     ThirdPartyAdapter-->>GSPAdapter: Success
-    GSPAdapter-->>GPayServer: transferFunds Resonse <br> Success
+    GSPAdapter-->>GPayServer: transferFunds Response <br> Success
     GPayServer-->>PayerMobileSim: Sucess
     Note left of PayerMobileSim: Success Notification
 
