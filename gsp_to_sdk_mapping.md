@@ -160,9 +160,7 @@ POST /v3/getTransferFundsQuotationRequest Response
       // Running with the assumption that Mojaloop will provide a singular FIDO assertion.
       "challengeOptions": [
         {
-          // challengeOptionId is used in the GSP transferFunds call.
-          // Assuming to identify which authentication method was chosen.
-          // We can have the GSP connector generate this
+          // challengeOptionId is used in the GSP transferFunds call, and is the link between the initiated Transfer and the Authorization.
           "challengeOptionId": initiateResponse.body.transactionId,
           "fido": {
             "challenge": initiateResponse.body.authorization.challenge,
