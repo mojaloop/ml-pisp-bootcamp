@@ -100,15 +100,15 @@
             "challenge": "<base64 encoded binary - the encoded challenge>",
             "transferAmount": {
               "amount": "10",
-              "currency": "EUR"
+              "currency": "USD"
             },
             "payeeReceiveAmount": {
               "amount": "10",
-              "currency": "EUR"
+              "currency": "USD"
             },
             "fees": {
-              "amount": "0",
-              "currency": "EUR"
+              "amount": "2",
+              "currency": "USD"
             },
             "payee": {
               "partyIdInfo": {
@@ -228,7 +228,7 @@
             {
               "accountNickname": "dfspa.user.nickname1",
               "address": "dfspa.username.1234",
-              "currency": "ZAR"
+              "currency": "USD"
             },
             {
               "accountNickname": "dfspa.user.nickname2",
