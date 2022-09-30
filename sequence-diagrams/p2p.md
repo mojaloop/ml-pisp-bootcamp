@@ -34,7 +34,7 @@ sequenceDiagram
     PayerDFSP->>MojaloopSwitch: POST /thirdpartyRequests/authorizations
     MojaloopSwitch->>ThirdPartyAdapter: POST /thirdpartyRequests/authorizations
     ThirdPartyAdapter-->>GSPAdapter: PayeeID: +256 123456789 <br> displayName: Alice Cooper <br> amount: 10000 UGX <br> fees: 10 UGX <br> challenge: xyz234
-    GSPAdapter-->>GPayServer: GetTransferFundsQuotationResponse
+    GSPAdapter-->>GPayServer: GetTransferFundsQuotationResponse <br> Success
     GPayServer-->>PayerMobileSim: Are you ok sending 10,010 UGX <br> to Alice Cooper that includes a fee of 10 UGX? <br> Authorize by signing the challenge
     Note left of PayerMobileSim: Confirmation
     Note left of PayerMobileSim: Authorize, Sign challenge
@@ -54,8 +54,8 @@ sequenceDiagram
     PayerDFSP->>MojaloopSwitch: PATCH /thirdpartyRequests/transactions/{transactionRequestId}
     MojaloopSwitch->>ThirdPartyAdapter: PATCH /thirdpartyRequests/transactions/{transactionRequestId}
     ThirdPartyAdapter-->>GSPAdapter: Success
-    GSPAdapter-->>GPayServer: Success
-    GPayServer-->>PayerMobileSim: Success
+    GSPAdapter-->>GPayServer: TransferFundsResonse <br> Success
+    GPayServer-->>PayerMobileSim: Sucess
     Note left of PayerMobileSim: Success Notification
 
 ```
