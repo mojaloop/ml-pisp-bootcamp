@@ -1,10 +1,32 @@
 # GSP API to Thirdparty API mapping
 
+## Points that need attention
+
+1. Quotations in Mojaloop needs the Payer's thirdparty link identifier that is established in the Linking phase in Mojaloop.
+   From observation there is no Payer identifying field in `getTransferFundsQuotationRequest`. Mojaloop would need
+   some identifier given at this step. In the below mapping example we used `googlePaymentToken` as an interim identifier.
+2. Mojaloop uses a transactionRequestId to associate it's three phases of thirdparty initiated payments, that is discovery, agreement and transfer.
+   That transactionRequestId is needed from the discovery phase i.e party lookup.
+   It is not clear what id we would use to map from the GSP API to transactionRequestId.
+   Suitable picks from given examples are `requestHeader.requestId` and `associationId`.
+
+## NOTES
+
+Micros Monetary values in this API are represented using a format called "micros", a standard at Google. Micros are an integer based, fixed precision format. To represent a monetary value in micros, multiply the standard currency value by 1,000,000.
+
+For example:
+
+USD$1.23 = 1230000 micro USD
+
+USD$0.01 = 10000 micro USD
+
+### Mapping example
+
 PISP issues quotation request.
 ```
 POST /v3/getTransferFundsQuotationRequest
 
-{
+const getTransferFundsQuotationRequest = {
   "requestHeader": {
     "protocolVersion": {
       "major": 3
@@ -43,9 +65,11 @@ POST /v3/getTransferFundsQuotationRequest
 Core connector takes POST /v3/getTransferFundsQuotationRequest and performs thirdparty party lookup. It then uses both the POST /v3/getTransferFundsQuotationRequest and party lookup response to initiate thirdparty transaction.
 
 ```
+const transactionRequestId = toUUID(getTransferFundsQuotationRequest.associationId);
+
 POST /thirdpartyTransaction/partyLookup
 {
-  transactionRequestId: convert_to_uuid(getTransferFundsQuotationRequest.associationId) || uuidv5(getTransferFundsQuotationRequest.associationId, config.namespace);,
+  transactionRequestId: transactionRequestId,
   payee: {
     partyIdType: "MSISDN",
     partyIdentifier: "+6577778888"
@@ -54,7 +78,7 @@ POST /thirdpartyTransaction/partyLookup
 
 Response
 
-{
+const partyLookupResponse = {
   body: {
     "party": {
       "partyIdInfo": {
@@ -78,6 +102,8 @@ Response
 ```
 
 ```
+const transactionRequestId = toUUID(getTransferFundsQuotationRequest.associationId);
+
 POST /thirdpartyTransactions/{transactionRequestId}/initiate
 {
   amount: {
@@ -100,10 +126,10 @@ POST /thirdpartyTransactions/{transactionRequestId}/initiate
   expiration: new Date(now() + config.expirationTimeout)
 }
 
-response: {
+const initiateResponse = {
   body: {
     "authorization": {
-      "transactionRequestId": "uuid()",
+      "transactionRequestId": transactionRequestId,
       "transferAmount": {
         "amount": "5.05",
         "currency": "SGD"
@@ -140,11 +166,14 @@ response: {
   }
 }
 ```
+
 Core connector then takes thirdparty initiation response to respond to PISP's initial request.
 
 ```
+const transactionRequestId = initiateResponse.body.authorization.transactionRequestId;
+
 POST /v3/getTransferFundsQuotationRequest Response
-{
+const getTransferFundsQuotationResponse = {
   "responseHeader": {
     "responseTimestamp": {
       "epochMillis": new Date.now()
@@ -161,11 +190,11 @@ POST /v3/getTransferFundsQuotationRequest Response
       "challengeOptions": [
         {
           // challengeOptionId is used in the GSP transferFunds call, and is the link between the initiated Transfer and the Authorization.
-          "challengeOptionId": initiateResponse.body.transactionId,
+          "challengeOptionId": transactionRequestId,
           "fido": {
             "challenge": initiateResponse.body.authorization.challenge,
             "allowCredentials": [
-              // Assuming this is if google wants to only allow specific devices
+              // Assuming this is if Google wants to only allow specific devices
               // to sign this challenge since they have multi-device support.
               // Mojaloop has no such requirement so we can probably put a mock string here.
               {
@@ -184,6 +213,8 @@ POST /v3/getTransferFundsQuotationRequest Response
 PISP sends transfer request along with user signed challenge to core connector.
 
 ```
+const transactionRequestId = getTransferFundsQuotationResponse.result.success.challengeOptions[0].challengeOptionId
+
 POST /v3/transferFundsRequest
 {
   "requestHeader": {
@@ -217,7 +248,7 @@ POST /v3/transferFundsRequest
   "getTransferFundsQuotationRequestId": "bWVyY2hhbnQgdHJhbnN",
   "challengeResults": [
     {
-      "challengeOptionId": "8StMrYBbh",
+      "challengeOptionId": transactionRequestId,
       "fidoAssertion": {
         "rawId": "Aad50Szy7ZFb8f7wd",
         "id": "Aad50Szy7ZFb8f7wdfMmFO",
@@ -237,6 +268,8 @@ POST /v3/transferFundsRequest
 Core connector maps PISP transfer request to thirdparty approve request.
 
 ```
+const transactionRequestId = transferFundsRequest.challengeResults[0].challengeOptionId
+
 POST /thirdpartyTransactions/{transactionRequestId}/approve
 
 {
@@ -251,7 +284,7 @@ POST /thirdpartyTransactions/{transactionRequestId}/approve
             authenticatorData: TransferFundsRequest.challengeResults[0].fidoAssertion.response.authenticatorData,
             clientDataJSON: TransferFundsRequest.challengeResults[0].fidoAssertion.response.clientDataJSON,
             signature: TransferFundsRequest.challengeResults[0].fidoAssertion.response.signature,
-            // What is userHandle in FIDO? Ignore for demo.
+            userHandle: TransferFundsRequest.challengeResults[0].fidoAssertion.response.userHandle,
           },
           type: 'public-key'
         }
@@ -260,7 +293,7 @@ POST /thirdpartyTransactions/{transactionRequestId}/approve
 };
 
 Response
-{
+const approveResponse = {
   "transactionStatus": {,
     "transactionRequestState": "ACCEPTED",
     "transactionState": "COMPLETED",
@@ -282,13 +315,3 @@ POST /v3/transferFundsRequest Response
   "paymentIntegratorTransactionId": "approveResponse.transactionStatus.transactionRequestId"
 }
 ```
-
-## NOTES
-
-Micros Monetary values in this API are represented using a format called "micros", a standard at Google. Micros are an integer based, fixed precision format. To represent a monetary value in micros, multiply the standard currency value by 1,000,000.
-
-For example:
-
-USD$1.23 = 1230000 micro USD
-
-USD$0.01 = 10000 micro USD
