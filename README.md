@@ -18,7 +18,8 @@ _* Ordered by Surname_
 
 1. Demo Presentation: https://docs.google.com/presentation/d/1Lfq3W724fqJx6iOA-CFRMDYWKdmvb0aVhRosaM4Dr5Q/edit?usp=sharing
 2. Workshop Design Sprint Workspace: https://docs.google.com/presentation/d/1FUrfjR7n_y9xaOTTBVKYCXZr4sYnox2qGzjQ_NybnKM/edit?usp=sharing
-3. Wireframe Prototypes: https://drive.google.com/file/d/1Wixa8JdLInXRDZm4vVVk2d1UOQ6K8FC-/view?usp=sharing
+3. Sequence Diagram: https://github.com/mojaloop/ml-pisp-bootcamp/blob/main/sequence-diagrams/p2p.md
+4. Wireframe Prototypes: https://drive.google.com/file/d/1Wixa8JdLInXRDZm4vVVk2d1UOQ6K8FC-/view?usp=sharing
 
 ## Quick Start
 
