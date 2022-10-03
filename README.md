@@ -20,7 +20,8 @@ _* Ordered by Surname_
 2. Workshop Design Sprint Workspace: https://docs.google.com/presentation/d/1FUrfjR7n_y9xaOTTBVKYCXZr4sYnox2qGzjQ_NybnKM/edit?usp=sharing
 3. Sequence Diagram: [./sequence-diagrams/p2p.md](./sequence-diagrams/p2p.md)
 4. Wireframe Prototypes: https://drive.google.com/file/d/1Wixa8JdLInXRDZm4vVVk2d1UOQ6K8FC-/view?usp=sharing
-5. GSP Payment API Reference: https://developers.google.com/standard-payments/payment-integrator-banking-fop-api _(note this does not include the "proposed" changes that have been implemented here)_
+5. GSP Payment API Reference: https://developers.google.com/standard-payments/payment-integrator-banking-fop-api _(note this does not include the "proposed" changes that have been implemented as part of this submission)_
+6. GSP Payment Proposed Changes: ...
 
 ## Quick Start
 
