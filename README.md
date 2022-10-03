@@ -5,7 +5,7 @@
 
 ## Team
 
-- Paul Baker - @PaulGregoryBaker /paul.baker@modusbox.com
+- Paul Baker - @PaulGregoryBaker / paul.baker@modusbox.com
 - Miguel de Barros - @mdebarros / miguel.debarros@modusbox.com
 - Vijaya Guthi - @vijayg10 / vijaya.guthi@modusbox.com
 - Sam Kummary - @elnyry-sam-k	/ sam@modusbox.com
