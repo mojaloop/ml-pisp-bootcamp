@@ -45,7 +45,9 @@ https://github.com/mojaloop/ml-testing-toolkit-ui/tree/feature/ml-pisp-bootcamp-
 
 ## GSP-Connector (Git Sub-module)
 
-This is a git-submodule to this repo.
+The [GSP-Connector](https://github.com/mojaloop/gsp-connector) has been added a sub-module.
+
+You can access the [GSP-Connector](https://github.com/mojaloop/gsp-connector) repo here: https://github.com/mojaloop/gsp-connector
 
 To initialize sub-modules run the following command:
 
