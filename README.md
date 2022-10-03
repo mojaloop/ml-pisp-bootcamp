@@ -1,5 +1,18 @@
 # ml-pisp-bootcamp
-https://dfslab.net/mojaloop-bootcamp-for-pisps/
+
+- https://mojaloop.io/events/mojaloop-bootcamp-for-pisps/
+- https://dfslab.net/mojaloop-bootcamp-for-pisps/
+
+## Team
+
+- Paul Baker - @PaulGregoryBaker /paul.baker@modusbox.com
+- Miguel de Barros - @mdebarros / miguel.debarros@modusbox.com
+- Vijaya Guthi - @vijayg10 / vijaya.guthi@modusbox.com
+- Sam Kummary - @elnyry-sam-k	/ sam@modusbox.com
+- Kevin Leyow - @kleyow / kevin.leyow@modusbox.com
+- Michael Richards - @MichaelJBRichards / Michael.Richards@modusbox.com
+
+_* Ordered by Surname_
 
 ## WireFrame Prototypes
 
